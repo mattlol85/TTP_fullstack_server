@@ -1,7 +1,7 @@
 const sequelize = require ("sequelize")
 const db = require('./database')
 
-//Campuses Table (Model Instance)
+//Campuses Table (Model)
 const Campuses = db.define('Campuses', {
     id: {
         type: sequelize.INTEGER,
