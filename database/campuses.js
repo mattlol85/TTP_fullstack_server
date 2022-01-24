@@ -1,8 +1,8 @@
 const sequelize = require ("sequelize")
-const db = require('./database')
+const db = require('./db')
 
 //Campuses Table (Model)
-const Campuses = db.define('Campuses', {
+const Campuses = db.define('campuses', {
     id: {
         type: sequelize.INTEGER,
         primaryKey: true

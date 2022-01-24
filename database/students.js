@@ -1,8 +1,8 @@
 const sequelize = require ("sequelize")
-const db = require('./database')
+const db = require('./db')
 
-//Students Table(Model)
-const Students = db.define('Students', {
+
+const Students = db.define('students', {
     id: {
         type: sequelize.INTEGER,
         primaryKey: true
@@ -59,4 +59,4 @@ const Students = db.define('Students', {
     initialAutoIncrement: 1
 })
 
-module.export = Students
+module.exports = Students

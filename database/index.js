@@ -2,9 +2,10 @@
 const Sequelize = require('sequelize')
 const Students = require('./students')
 const Campuses = require('./campuses')
-const database = require('./database')
+const database = require('./db')
 
-Campuses.hasMany(Students) // M:M
+
+Campuses.hasMany(Students) // 1:M
 Students.belongsTo(Campuses) // 1:M 
 
 module.exports = {
