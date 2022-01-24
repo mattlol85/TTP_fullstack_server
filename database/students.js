@@ -1,12 +1,8 @@
 const sequelize = require ("sequelize")
 const db = require('./db')
 
-
+// Id attribute will be auto inserted when adding a new students
 const Students = db.define('students', {
-    id: {
-        type: sequelize.INTEGER,
-        primaryKey: true
-    },
     firstName: {
         type: sequelize.STRING,
         allowNull: false,

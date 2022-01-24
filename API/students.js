@@ -1,26 +1,25 @@
 //Connect Local databse through Sequelize with Express
-//API Router of Campuses
+//API Router of Students
 const router = require('express').Router()
 const {Campuses, Students} = require('../database/index')
 
-//Listen on http://localhost:3000/API/campuses
 router.route('/')
-// Insert a new Campus
+
+// Insert a new Student
 .post(async(req, res) => {
     console.log(req.body)
     
     try {
-        const newCampus = await Campuses.create({
+        const newStudent = await Students.create({
         id: req.body.id,
-        name: req.body.name, 
-        address: req.body.address,
-        city: req.body.city,
-        state: req.body.state,
-        zip: req.body.zip,
-        description: req.body.description,
+        campusId: req.body.campusId, //(Foreign Key) Student should has at most one campuseId
+        email: req.body.email,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        gpa: req.body.gpa,
         img: req.body.img
     })
-        res.json(newCampus.rows)
+        res.json(newStudent)
     }catch(err) {
         if(err.message === "Validation error") {
             res.send("id already existed!")
@@ -30,14 +29,14 @@ router.route('/')
     }
 })
 
-//Get all campuses from database
+//Get all students from database
 .get(async (req, res) => {
     try{
-        const campuses = await Campuses.findAll()
-        if (campuses.length === 0) {
+        const students = await Students.findAll()
+        if (students.length === 0) {
             res.send("There are no campuses registered in the the database")
         }else{
-            res.send(campuses)
+            res.send(students)
         }
 
     }catch(err) {
@@ -45,18 +44,16 @@ router.route('/')
     }
 })
 
-//Relocate the api link
-//Listen on localhost:3000/API/campuses/{id}
-router.route('/id')
-// Getting a single campuse
+//listen on localhost:3000/API/students/{id}
+router.route('/:id')
+// Getting a single student
 .get(async(req, res) => {
     try {
-        const targetCampus = await Campuses.findByPk(req.params.id)
-        // All students who has the targetCampus.id will be considered to dislay on the page
-        const students = await Students.findAll({where: {campusId: targetCampus.id}})
+        const targetStudent = await Students.findByPk(req.params.id)
+        const campus = await Campuses.findOne({where: {id: targetStudent.campusId}})
         res.status(200).json({
-            campus: targetCampus,
-            student: students
+            student: targetStudent,
+            campus: campus         
         })
     }catch(err){
         res.send(err.message)
@@ -66,9 +63,9 @@ router.route('/id')
 //To delete the target campus
 .delete(async(req, res)=> {
     try{
-        const targetCampus = await Campuses.findByPk(req.params.id)
+        const targetStudent = await Students.findByPk(req.params.id)
         //remove the campus
-        await targetCampus.destory()
+        await targetStudent.destory()
     }catch(err){
         res.send(err.message)
     }
@@ -78,7 +75,7 @@ router.route('/id')
 .put(async(req, res) => {
     console.log("Update target: " + req.params.id)
     const input = req.body
-    const target = await Campuses.findByPk(req.params.id)
+    const target = await Students.findByPk(req.params.id)
     for (let key in target) {
         console.log(key)
         target.update({[key]:target[key]})
